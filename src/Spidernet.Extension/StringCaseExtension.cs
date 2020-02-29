@@ -1,10 +1,10 @@
 ﻿using System.Text;
 
-namespace Spidernet.TaskScheduler.Extensions
+namespace Spidernet.Extension
 {
-    internal static class StringCaseExtension
+    public static class StringCaseExtension
     {
-        internal static string ToPascalCase(this string s)
+        public static string ToPascalCase(this string s)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
@@ -37,7 +37,7 @@ namespace Spidernet.TaskScheduler.Extensions
             return builder.ToString();
         }
 
-        internal static string ToCamelCase(this string s)
+        public static string ToCamelCase(this string s)
         {
             if (string.IsNullOrEmpty(s) || !char.IsUpper(s[0]))
             {
@@ -78,7 +78,7 @@ namespace Spidernet.TaskScheduler.Extensions
             NewWord
         }
 
-        internal static string ToSnakeCase(this string s)
+        public static string ToSnakeCase(this string s)
         {
             if (string.IsNullOrEmpty(s))
             {

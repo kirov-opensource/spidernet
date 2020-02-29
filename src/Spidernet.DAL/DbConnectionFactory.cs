@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
-namespace Spidernet.TaskScheduler
+namespace Spidernet.DAL
 {
-    internal class DbConnectionFactory
+    public class DbConnectionFactory
     {
         private IOptions<DbConnectionConfig> config { get; set; }
 
@@ -18,6 +15,7 @@ namespace Spidernet.TaskScheduler
         /// </summary>
         public IDbConnection Connection
         {
+
             get
             {
                 if (connection == null)

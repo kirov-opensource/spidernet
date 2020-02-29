@@ -1,11 +1,9 @@
 ﻿using Dapper.Contrib.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Spidernet.TaskScheduler.Entities
+namespace Spidernet.DAL.Entities
 {
-    internal abstract class Entity
+    public abstract class Entity
     {
         /// <summary>
         /// 标识列

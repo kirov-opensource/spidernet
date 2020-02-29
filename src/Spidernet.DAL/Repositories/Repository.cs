@@ -1,17 +1,17 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
 using Snowflake.Core;
-using Spidernet.TaskScheduler.Entities;
-using Spidernet.TaskScheduler.Extensions;
+using Spidernet.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using Spidernet.Extension;
 
-namespace Spidernet.TaskScheduler.Repositories
+namespace Spidernet.DAL.Repositories
 {
-    internal abstract class Repository<TEntity> where TEntity : Entity, new()
+    public abstract class Repository<TEntity> where TEntity : Entity, new()
     {
         /// <summary>
         /// 
@@ -33,17 +33,17 @@ namespace Spidernet.TaskScheduler.Repositories
         /// <summary>
         /// 表名称
         /// </summary>
-        public string TableName => GetTableName(EntityType);
+        protected string TableName => GetTableName(EntityType);
 
         /// <summary>
         /// 主键名称
         /// </summary>
-        public string PrimaryKeyName => GetPrimaryKeyName(EntityType);
+        protected string PrimaryKeyName => GetPrimaryKeyName(EntityType);
 
         private Type EntityType => typeof(TEntity);
 
 
-        internal Repository(DbConnectionFactory dbConnectionFactory, IdWorker idWorker)
+        public Repository(DbConnectionFactory dbConnectionFactory, IdWorker idWorker)
         {
             this.dbConnectionFactory = dbConnectionFactory;
             this.idWorker = idWorker;
@@ -55,7 +55,7 @@ namespace Spidernet.TaskScheduler.Repositories
         /// </summary>
         /// <param name="entity">对象</param>
         /// <returns></returns>
-        internal long Insert(TEntity entity)
+        public long Insert(TEntity entity)
         {
             if (entity.id == 0)
             {
@@ -69,7 +69,7 @@ namespace Spidernet.TaskScheduler.Repositories
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        internal bool Update(TEntity entity)
+        public bool Update(TEntity entity)
         {
             entity.update_at = DateTime.Now;
             return Connection.Update(entity, commandTimeout: commandTimeout);
@@ -80,7 +80,7 @@ namespace Spidernet.TaskScheduler.Repositories
         /// </summary>
         /// <param name="id">实体Id</param>
         /// <returns></returns>
-        internal virtual bool Delete(long id)
+        public virtual bool Delete(long id)
         {
             return Connection.Delete(new TEntity { id = id });
         }
@@ -90,7 +90,7 @@ namespace Spidernet.TaskScheduler.Repositories
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        internal virtual bool Delete(IList<object> primaryKeyValues)
+        public virtual bool Delete(IList<object> primaryKeyValues)
         {
             if (primaryKeyValues == null || !primaryKeyValues.Any())
             {
@@ -105,7 +105,7 @@ namespace Spidernet.TaskScheduler.Repositories
         /// </summary>
         /// <param name="id">Id</param>
         /// <returns>对象</returns>
-        internal virtual TEntity FirstOrDefault(object primaryKeyValue)
+        public virtual TEntity FirstOrDefault(object primaryKeyValue)
         {
             string sql = $"select * from {TableName} where {PrimaryKeyName} = @primaryKeyValue and delete_at is null";
             return Connection.QueryFirstOrDefault<TEntity>(sql, new { primaryKeyValue });
@@ -115,7 +115,7 @@ namespace Spidernet.TaskScheduler.Repositories
         /// 获取对象数量
         /// </summary>
         /// <returns></returns>
-        internal virtual int Count(string whereString = null, object parameters = null, bool ignoreDeletedData = true)
+        public virtual int Count(string whereString = null, object parameters = null, bool ignoreDeletedData = true)
         {
             string sql = $"select count(1) from {TableName}";
             if (!ignoreDeletedData)

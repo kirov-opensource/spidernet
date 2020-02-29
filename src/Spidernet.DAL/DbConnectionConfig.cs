@@ -1,6 +1,6 @@
-﻿namespace Spidernet.TaskScheduler
+﻿namespace Spidernet.DAL
 {
-    internal class DbConnectionConfig
+    public class DbConnectionConfig
     {
         /// <summary>
         /// 数据库连接字符串

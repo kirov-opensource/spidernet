@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Spidernet.TaskScheduler.Entities
+namespace Spidernet.TaskScheduler.Services
 {
-    internal class Task : Entity
+    internal class Service
     {
+
+
     }
 }
