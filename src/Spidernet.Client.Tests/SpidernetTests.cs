@@ -15,7 +15,7 @@ namespace Spidernet.Client.Tests {
   public class SpidernetTests {
     [Fact]
     public void SerializeAndDeserializeTest() {
-      var linkParser = new ParserModel {
+      var linkParser = new PropertyModel {
         NodeSelector = new SelectorModel {
           Type = Selector.XPath,
           MatchExpression = "(/a[contains(@classs,'ellipsis-text')])[1]/@href"
@@ -23,7 +23,7 @@ namespace Spidernet.Client.Tests {
         Type = Parser.String
       };
 
-      var productNameParser = new ParserModel {
+      var productNameParser = new PropertyModel {
         NodeSelector = new SelectorModel {
           Type = Selector.XPath,
           MatchExpression = "(/div[contains(@classs,'pi-img-wrapper')])[1]/a[1]/@name"
@@ -31,7 +31,7 @@ namespace Spidernet.Client.Tests {
         Type = Parser.String
       };
 
-      var priceParser = new ParserModel {
+      var priceParser = new PropertyModel {
         NodeSelector = new SelectorModel {
           Type = Selector.XPath,
           MatchExpression = "(/div[contains(@classs,'pi-price')])[1]/text()"
@@ -40,13 +40,13 @@ namespace Spidernet.Client.Tests {
       };
 
 
-      var productParser = new ParserModel {
+      var productParser = new PropertyModel {
         Type = Parser.Array,
         NodeSelector = new SelectorModel {
           Type = Selector.CSS,
           MatchExpression = ".product-list>.product-item"
         },
-        Parser = new Dictionary<string, ParserModel> {
+        Properties = new Dictionary<string, PropertyModel> {
           { "Link",linkParser },
           { "Name",productNameParser },
           { "Price",priceParser }
@@ -58,7 +58,7 @@ namespace Spidernet.Client.Tests {
         Uri = "http://www.exdoll.com/productlist.ac",
         TaskId = 0,
         Variables = new Dictionary<string, string> { },
-        Parser = new Dictionary<string, ParserModel> {
+        Properties = new Dictionary<string, PropertyModel> {
           { "Products",productParser }
         },
       };
@@ -83,7 +83,7 @@ namespace Spidernet.Client.Tests {
       //var parserString = "{\"TaskId\":0,\"Uri\":\"http://www.exdoll.com/productlist.ac\",\"Parser\":{\"Products\":{\"Type\":\"Array\",\"Selector\":{\"Type\":\"CSS\",\"MatchExpression\":\".product-list\u003E.product-item\"},\"Parser\":{\"Link\":{\"Type\":\"String\",\"Selector\":{\"Type\":\"XPath\",\"MatchExpression\":\"(/a[contains(@classs,\u0027ellipsis-text\u0027)])[1]/@href\"}},\"Name\":{\"Type\":\"String\",\"Selector\":{\"Type\":\"XPath\",\"MatchExpression\":\"(/div[contains(@classs,\u0027pi-img-wrapper\u0027)])[1]/a[1]/@name\"}},\"Price\":{\"Type\":\"String\",\"Selector\":{\"Type\":\"XPath\",\"MatchExpression\":\"(/div[contains(@classs,\u0027pi-price\u0027)])[1]/text()\"}}}}},\"Variables\":{}}";
       ////div.product-list div.product-item
       //var parserModel = JsonSerializer.Deserialize<TaskModel>(parserString, opts);
-      var linkParser = new ParserModel {
+      var linkParser = new PropertyModel {
         NodeSelector = new SelectorModel {
           Type = Selector.XPath,
           MatchExpression = "(.//a[contains(@class,'ellipsis-text')])[1]"
@@ -93,7 +93,7 @@ namespace Spidernet.Client.Tests {
         OutputFromAttributeName = "href",
       };
 
-      var nameParser = new ParserModel {
+      var nameParser = new PropertyModel {
         NodeSelector = new SelectorModel {
           Type = Selector.XPath,
           MatchExpression = "(.//div[contains(@class,'pi-img-wrapper')])[1]/a[1]"
@@ -103,7 +103,7 @@ namespace Spidernet.Client.Tests {
         OutputFromAttributeName = "name",
       };
 
-      var priceParser = new ParserModel {
+      var priceParser = new PropertyModel {
         NodeSelector = new SelectorModel {
           Type = Selector.XPath,
           MatchExpression = "(.//div[contains(@class,'pi-price')])[1]"
@@ -113,13 +113,13 @@ namespace Spidernet.Client.Tests {
       };
 
 
-      var productParser = new ParserModel {
+      var productParser = new PropertyModel {
         Type = Parser.Array,
         NodeSelector = new SelectorModel {
           Type = Selector.CSS,
           MatchExpression = "div.product-list div.product-item"
         },
-        Parser = new Dictionary<string, ParserModel> {
+        Properties = new Dictionary<string, PropertyModel> {
           { "Link",linkParser },
           { "Name",nameParser },
           { "Price",priceParser }
@@ -131,7 +131,7 @@ namespace Spidernet.Client.Tests {
         Uri = "http://www.exdoll.com/productlist.ac",
         TaskId = 0,
         Variables = new Dictionary<string, string> { },
-        Parser = new Dictionary<string, ParserModel> {
+        Properties = new Dictionary<string, PropertyModel> {
           { "Products",productParser }
         },
       };
@@ -146,10 +146,10 @@ namespace Spidernet.Client.Tests {
       HtmlDocument document = new HtmlDocument();
       document.LoadHtml(contentText);
       var rootNode = document.DocumentNode;
-      var result = await Parse(rootNode, taskModel.Parser.First().Value);
+      var result = await Parse(rootNode, taskModel.Properties.First().Value);
     }
 
-    private async Task<object> Parse(HtmlNode node, ParserModel parser) {
+    private async Task<object> Parse(HtmlNode node, PropertyModel parser) {
       bool selectorIsXPath = parser.NodeSelector.Type == Selector.XPath;
       string selector = parser.NodeSelector.MatchExpression;
       object tempResult = null;
@@ -186,11 +186,11 @@ namespace Spidernet.Client.Tests {
           var nodes = selectorIsXPath ? node.SelectNodes(selector) : node.QuerySelectorAll(selector);
           IList<object> tTempResult = new List<object>();
           //有Parser 即为对象
-          if (parser.Parser?.Any() ?? false) {
+          if (parser.Properties?.Any() ?? false) {
             foreach (var tempNode in nodes) {
               dynamic tempDynamicResult = new ExpandoObject();
               var tempDynamicResultDic = (IDictionary<string, object>)tempDynamicResult;
-              foreach (var tempParser in parser.Parser) {
+              foreach (var tempParser in parser.Properties) {
                 tempDynamicResultDic[tempParser.Key] = await Parse(tempNode, tempParser.Value);
               }
               tTempResult.Add(tempDynamicResult);

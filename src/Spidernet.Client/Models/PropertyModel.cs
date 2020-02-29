@@ -6,7 +6,7 @@ using System.Security.Permissions;
 using System.Threading.Tasks;
 
 namespace Spidernet.Client.Models {
-  public class ParserModel {
+  public class PropertyModel {
     /// <summary>
     /// 类型
     /// </summary>
@@ -18,7 +18,7 @@ namespace Spidernet.Client.Models {
     /// <summary>
     /// Parser
     /// </summary>
-    public IDictionary<string, ParserModel> Parser { get; set; }
+    public IDictionary<string, PropertyModel> Properties { get; set; }
     /// <summary>
     /// 结果输出
     /// </summary>

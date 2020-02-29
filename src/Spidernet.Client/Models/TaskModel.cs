@@ -16,7 +16,7 @@ namespace Spidernet.Client.Models {
     /// <summary>
     /// 解析
     /// </summary>
-    public IDictionary<string,ParserModel> Parser { get; set; }
+    public IDictionary<string,PropertyModel> Properties { get; set; }
     /// <summary>
     /// 环境变量
     /// </summary>
