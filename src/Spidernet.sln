@@ -5,13 +5,17 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.TaskScheduler", "Spidernet.TaskScheduler\Spidernet.TaskScheduler.csproj", "{D5445A5F-D287-4A8A-AA9D-23261FE5557B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spidernet.DAL", "Spidernet.DAL\Spidernet.DAL.csproj", "{FEB89A26-01E0-44E7-9824-34680A91E613}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.DAL", "Spidernet.DAL\Spidernet.DAL.csproj", "{FEB89A26-01E0-44E7-9824-34680A91E613}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spidernet.Model", "Spidernet.Model\Spidernet.Model.csproj", "{739113CB-BCA9-4FA0-B36E-7DAFF13D996C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Model", "Spidernet.Model\Spidernet.Model.csproj", "{739113CB-BCA9-4FA0-B36E-7DAFF13D996C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spidernet.Extension", "Spidernet.Extension\Spidernet.Extension.csproj", "{383CE6D7-419B-4EA6-9A76-444967A794FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Extension", "Spidernet.Extension\Spidernet.Extension.csproj", "{383CE6D7-419B-4EA6-9A76-444967A794FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spidernet.TaskScheduler.Test", "Spidernet.TaskScheduler.Test\Spidernet.TaskScheduler.Test.csproj", "{91B7C148-E2F3-4206-A146-CAF5BE6A2D6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.TaskScheduler.Test", "Spidernet.TaskScheduler.Test\Spidernet.TaskScheduler.Test.csproj", "{91B7C148-E2F3-4206-A146-CAF5BE6A2D6A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Client", "Spidernet.Client\Spidernet.Client.csproj", "{6F7E8DE6-B544-4C9F-A9BD-2C0697993606}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Client.Tests", "Spidernet.Client.Tests\Spidernet.Client.Tests.csproj", "{EA0644ED-B0CC-48CA-B924-FF138D3F06E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{91B7C148-E2F3-4206-A146-CAF5BE6A2D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91B7C148-E2F3-4206-A146-CAF5BE6A2D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91B7C148-E2F3-4206-A146-CAF5BE6A2D6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F7E8DE6-B544-4C9F-A9BD-2C0697993606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F7E8DE6-B544-4C9F-A9BD-2C0697993606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F7E8DE6-B544-4C9F-A9BD-2C0697993606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F7E8DE6-B544-4C9F-A9BD-2C0697993606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA0644ED-B0CC-48CA-B924-FF138D3F06E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA0644ED-B0CC-48CA-B924-FF138D3F06E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA0644ED-B0CC-48CA-B924-FF138D3F06E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA0644ED-B0CC-48CA-B924-FF138D3F06E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
