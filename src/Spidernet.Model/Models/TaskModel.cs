@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Spidernet.Model.Models {
   public class TaskModel {
-    public RequestMethodEnum RequestMethod { get; set; }
     /// <summary>
     /// Id
     /// </summary>
@@ -16,12 +15,20 @@ namespace Spidernet.Model.Models {
     /// </summary>
     public string Uri { get; set; }
     /// <summary>
-    /// 解析
+    /// 请求类型
+    /// </summary>
+    public RequestMethodEnum RequestMethod { get; set; }
+    /// <summary>
+    /// 字段解析
     /// </summary>
     public IDictionary<string, PropertyParsingRuleModel> PropertyParsingRules { get; set; }
     /// <summary>
     /// 环境变量
     /// </summary>
     public RequestParameterModel RequestParameter { get; set; }
+    /// <summary>
+    /// 结果类型
+    /// </summary>
+    public ResponseTypeEnum ResponseType { get; set; }
   }
 }

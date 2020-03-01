@@ -1,6 +1,7 @@
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using RestSharp;
 using Spidernet.Model.Enums;
@@ -19,6 +20,19 @@ namespace Spidernet.Client.Tests {
 
     [Fact]
     public async void ParserTest() {
+      /*
+       * 构思
+       * 请求引擎：默认,WebDriver
+       * 内容类型：Text,JSON,HTML
+       * 内容字符集：UTF8,ASNII -restSharp有 不需要,
+       * 
+       * 使用QuartZ.NET启动一个Job 定时 批量 拉取MQ中的Task
+       * 拉取后要将该Task状态置为执行中，如果达到超时阈值没有执行完毕，该状态重置
+       * 在执行完毕后，将该Task的Response丢入MQ中并将该Task设置为执行完毕
+       * 
+       */
+
+
       var linkParser = new PropertyParsingRuleModel {
         NodeSelector = new SelectorModel {
           Type = SelectorEnum.XPath,
@@ -68,7 +82,7 @@ namespace Spidernet.Client.Tests {
         RequestMethod = RequestMethodEnum.Get,
         TaskId = 0,
         RequestParameter = new RequestParameterModel {
-          Headers = new Dictionary<string, string> { { "JSESSIONID", "4173BE2521D676127C3F9C3F8EA68F67" } },
+          Headers = new Dictionary<string, string> { { "cookie", "JSESSIONID=912BD825760319675E9DE1E1C1E2D701" } },
           Body = null
         },
         PropertyParsingRules = new Dictionary<string, PropertyParsingRuleModel> {
@@ -90,12 +104,18 @@ namespace Spidernet.Client.Tests {
       //IRestResponse response = await restClient.ExecuteGetAsync(request);
 
       var response = await DownloadData(taskModel);
-
       var contentText = response.Content;
       HtmlDocument document = new HtmlDocument();
       document.LoadHtml(contentText);
       var rootNode = document.DocumentNode;
       var result = await Parse(rootNode, taskModel.PropertyParsingRules.First().Value);
+      var resultT = new {
+        TaskId = taskModel.TaskId,
+        Result = result,
+        ResponseHeaders = response.Headers.ToDictionary(c => c.Name, c => c?.Value?.ToString()),
+        ResponseCookies = response.Cookies.ToDictionary(c => c.Name, c => c.Value)
+      };
+      var aaa = JsonSerializer.Serialize(resultT, opts);
     }
 
     private async Task<IRestResponse> DownloadData(TaskModel taskModel) {
