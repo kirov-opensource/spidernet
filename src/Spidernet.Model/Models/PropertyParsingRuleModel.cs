@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace Spidernet.Model.Models {
-  public class PropertyParserModel {
+  public class PropertyParsingRuleModel {
     /// <summary>
     /// 类型
     /// </summary>
@@ -14,7 +14,7 @@ namespace Spidernet.Model.Models {
     /// <summary>
     /// Parser
     /// </summary>
-    public IDictionary<string, PropertyParserModel> PropertyParsers { get; set; }
+    public IDictionary<string, PropertyParsingRuleModel> PropertyParsers { get; set; }
     /// <summary>
     /// 输出类型
     /// </summary>

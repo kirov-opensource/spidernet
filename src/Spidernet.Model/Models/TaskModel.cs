@@ -18,7 +18,7 @@ namespace Spidernet.Model.Models {
     /// <summary>
     /// 解析
     /// </summary>
-    public IDictionary<string, PropertyParserModel> PropertyParsers { get; set; }
+    public IDictionary<string, PropertyParsingRuleModel> PropertyParsingRules { get; set; }
     /// <summary>
     /// 环境变量
     /// </summary>

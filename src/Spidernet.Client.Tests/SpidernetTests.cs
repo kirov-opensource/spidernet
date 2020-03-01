@@ -19,7 +19,7 @@ namespace Spidernet.Client.Tests {
 
     [Fact]
     public async void ParserTest() {
-      var linkParser = new PropertyParserModel {
+      var linkParser = new PropertyParsingRuleModel {
         NodeSelector = new SelectorModel {
           Type = SelectorEnum.XPath,
           MatchExpression = "(.//a[contains(@class,'ellipsis-text')])[1]"
@@ -29,7 +29,7 @@ namespace Spidernet.Client.Tests {
         OutputFromAttributeName = "href",
       };
 
-      var nameParser = new PropertyParserModel {
+      var nameParser = new PropertyParsingRuleModel {
         NodeSelector = new SelectorModel {
           Type = SelectorEnum.XPath,
           MatchExpression = "(.//div[contains(@class,'pi-img-wrapper')])[1]/a[1]"
@@ -39,7 +39,7 @@ namespace Spidernet.Client.Tests {
         OutputFromAttributeName = "name",
       };
 
-      var priceParser = new PropertyParserModel {
+      var priceParser = new PropertyParsingRuleModel {
         NodeSelector = new SelectorModel {
           Type = SelectorEnum.XPath,
           MatchExpression = "(.//div[contains(@class,'pi-price')])[1]"
@@ -49,13 +49,13 @@ namespace Spidernet.Client.Tests {
       };
 
 
-      var productParser = new PropertyParserModel {
+      var productParser = new PropertyParsingRuleModel {
         Type = OutputTypeEnum.Array,
         NodeSelector = new SelectorModel {
           Type = SelectorEnum.CSS,
           MatchExpression = "div.product-list div.product-item"
         },
-        PropertyParsers = new Dictionary<string, PropertyParserModel> {
+        PropertyParsers = new Dictionary<string, PropertyParsingRuleModel> {
           { "Link",linkParser },
           { "Name",nameParser },
           { "Price",priceParser }
@@ -71,7 +71,7 @@ namespace Spidernet.Client.Tests {
           Headers = new Dictionary<string, string> { { "JSESSIONID", "4173BE2521D676127C3F9C3F8EA68F67" } },
           Body = null
         },
-        PropertyParsers = new Dictionary<string, PropertyParserModel> {
+        PropertyParsingRules = new Dictionary<string, PropertyParsingRuleModel> {
           { "Products",productParser }
         },
       };
@@ -83,19 +83,19 @@ namespace Spidernet.Client.Tests {
       opts.Converters.Add(stringEnumConverter);
 
 
-      //var txt = JsonSerializer.Serialize(taskModel, opts);
-      IRestClient restClient = new RestClient(taskModel.Uri);
+      var txt = JsonSerializer.Serialize(taskModel, opts);
+      //IRestClient restClient = new RestClient(taskModel.Uri);
+      //IRestRequest request = new RestRequest(Method.GET);
+      //request.AddCookie("JSESSIONID", "4173BE2521D676127C3F9C3F8EA68F67");
+      //IRestResponse response = await restClient.ExecuteGetAsync(request);
 
-      IRestRequest request = new RestRequest(Method.GET);
-      request.AddCookie("JSESSIONID", "4173BE2521D676127C3F9C3F8EA68F67");
+      var response = await DownloadData(taskModel);
 
-
-      IRestResponse response = await restClient.ExecuteGetAsync(request);
       var contentText = response.Content;
       HtmlDocument document = new HtmlDocument();
       document.LoadHtml(contentText);
       var rootNode = document.DocumentNode;
-      var result = await Parse(rootNode, taskModel.PropertyParsers.First().Value);
+      var result = await Parse(rootNode, taskModel.PropertyParsingRules.First().Value);
     }
 
     private async Task<IRestResponse> DownloadData(TaskModel taskModel) {
@@ -137,9 +137,10 @@ namespace Spidernet.Client.Tests {
       //if (taskModel.RequestParameter.Body) {
       //  request.AddBody(taskModel.RequestParameter.Body);
       //}
+      return await restClient.ExecuteAsync(request, requestMethod);
     }
 
-    private async Task<object> Parse(HtmlNode node, PropertyParserModel parser) {
+    private async Task<object> Parse(HtmlNode node, PropertyParsingRuleModel parser) {
       bool selectorIsXPath = parser.NodeSelector.Type == SelectorEnum.XPath;
       string selector = parser.NodeSelector.MatchExpression;
       object tempResult = null;
