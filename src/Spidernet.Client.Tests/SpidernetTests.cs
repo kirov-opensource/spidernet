@@ -55,7 +55,7 @@ namespace Spidernet.Client.Tests {
           Type = SelectorEnum.CSS,
           MatchExpression = "div.product-list div.product-item"
         },
-        PropertyParsers = new Dictionary<string, PropertyParsingRuleModel> {
+        PropertyParsingRules = new Dictionary<string, PropertyParsingRuleModel> {
           { "Link",linkParser },
           { "Name",nameParser },
           { "Price",priceParser }
@@ -174,11 +174,11 @@ namespace Spidernet.Client.Tests {
           var nodes = selectorIsXPath ? node.SelectNodes(selector) : node.QuerySelectorAll(selector);
           IList<object> tTempResult = new List<object>();
           //有Parser 即为对象
-          if (parser.PropertyParsers?.Any() ?? false) {
+          if (parser.PropertyParsingRules?.Any() ?? false) {
             foreach (var tempNode in nodes) {
               dynamic tempDynamicResult = new ExpandoObject();
               var tempDynamicResultDic = (IDictionary<string, object>)tempDynamicResult;
-              foreach (var tempParser in parser.PropertyParsers) {
+              foreach (var tempParser in parser.PropertyParsingRules) {
                 tempDynamicResultDic[tempParser.Key] = await Parse(tempNode, tempParser.Value);
               }
               tTempResult.Add(tempDynamicResult);

@@ -14,7 +14,7 @@ namespace Spidernet.Model.Models {
     /// <summary>
     /// Parser
     /// </summary>
-    public IDictionary<string, PropertyParsingRuleModel> PropertyParsers { get; set; }
+    public IDictionary<string, PropertyParsingRuleModel> PropertyParsingRules { get; set; }
     /// <summary>
     /// 输出类型
     /// </summary>
