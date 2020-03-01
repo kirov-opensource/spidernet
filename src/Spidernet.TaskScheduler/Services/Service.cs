@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Spidernet.TaskScheduler.Services
-{
-    internal class Service
-    {
+﻿namespace Spidernet.TaskScheduler.Services {
+  public class Service {
 
 
-    }
+  }
 }

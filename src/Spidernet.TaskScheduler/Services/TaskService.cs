@@ -1,14 +1,18 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Spidernet.DAL.Entities;
 using Spidernet.DAL.Repositories;
-using Spidernet.Extension.Exceptions;
-using Spidernet.Model.Tasks;
+using Spidernet.Extension;
+using Spidernet.Model.Enums;
+using Spidernet.Model.Models;
 using Spidernet.TaskScheduler.Extensions;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace Spidernet.TaskScheduler.Services {
-  internal class TaskService : Service {
+  public class TaskService : Service {
 
     private readonly TaskRepository taskRepository;
     private readonly TemplateRepository templateRepository;
@@ -23,23 +27,21 @@ namespace Spidernet.TaskScheduler.Services {
     /// Generate task
     /// </summary>
     /// <param name="task"></param>
+    /// <param name="template"></param>
     /// <returns></returns>
-    internal TaskExecuteModel GenerateTask(Task task) {
-      var template = templateRepository.FirstOrDefault(task.template_id);
-      if (template == null) {
-        throw new BusinessException("template can not be null.");
+    public TaskModel GenerateTask(Task task, Template template) {
+      if (template == null || task == null) {
+        throw new ArgumentNullException(template == null ? nameof(template) : nameof(task));
       }
       var configuration = new ConfigurationBuilder().AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(task.parameters))).Build();
-      var taskExecuteModel = new TaskExecuteModel {
-        Header = SymbolsEngine.SymbolsPreprocess(task.header, configuration),
-        Parser = SymbolsEngine.SymbolsPreprocess(template.parser, configuration),
+      Enum.TryParse(task.http_method.ToPascalCase(), out RequestMethodEnum requestMethod);
+      var taskExecuteModel = new TaskModel {
+        RequestMethod = requestMethod,
+        PropertyParsingRules = JsonConvert.DeserializeObject<IDictionary<string, PropertyParsingRuleModel>>(SymbolsEngine.SymbolsPreprocess(template.property_parsing_rule, configuration)),
         TaskId = task.id,
-        Uri = SymbolsEngine.SymbolsPreprocess(task.uri, configuration)
+        Uri = SymbolsEngine.SymbolsPreprocess(template.uri, configuration)
       };
       return taskExecuteModel;
     }
-
-
-
   }
 }
