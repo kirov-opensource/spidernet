@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Spidernet.Model.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Spidernet.Model.Models {
   public class TaskModel {
+    public RequestMethodEnum RequestMethod { get; set; }
     /// <summary>
     /// Id
     /// </summary>
@@ -16,10 +18,10 @@ namespace Spidernet.Model.Models {
     /// <summary>
     /// 解析
     /// </summary>
-    public IDictionary<string,PropertyParserModel> PropertyParsers { get; set; }
+    public IDictionary<string, PropertyParserModel> PropertyParsers { get; set; }
     /// <summary>
     /// 环境变量
     /// </summary>
-    public IDictionary<string,string> Variables { get; set; }
+    public RequestParameterModel RequestParameter { get; set; }
   }
 }

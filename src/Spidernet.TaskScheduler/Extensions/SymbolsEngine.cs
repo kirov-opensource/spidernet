@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace Spidernet.TaskScheduler.Extensions {
   public static class SymbolsEngine {
 
-    private const string symbolsRegex = "\\{\\{([a-z]|[A-Z]|[0-9]|:)*\\}\\}";
+    private const string symbolsRegex = "\\{\\{[a-zA-Z0-9:]*\\}\\}";
 
     /// <summary>
     /// Replace symbol with real value

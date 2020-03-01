@@ -1,5 +1,7 @@
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using RestSharp;
 using Spidernet.Model.Enums;
 using Spidernet.Model.Models;
@@ -63,8 +65,12 @@ namespace Spidernet.Client.Tests {
 
       var taskModel = new TaskModel {
         Uri = "http://www.exdoll.com/productlist.ac",
+        RequestMethod = RequestMethodEnum.Get,
         TaskId = 0,
-        Variables = new Dictionary<string, string> { },
+        RequestParameter = new RequestParameterModel {
+          Headers = new Dictionary<string, string> { { "JSESSIONID", "4173BE2521D676127C3F9C3F8EA68F67" } },
+          Body = null
+        },
         PropertyParsers = new Dictionary<string, PropertyParserModel> {
           { "Products",productParser }
         },
@@ -77,16 +83,60 @@ namespace Spidernet.Client.Tests {
       opts.Converters.Add(stringEnumConverter);
 
 
-      var txt = JsonSerializer.Serialize(taskModel, opts);
+      //var txt = JsonSerializer.Serialize(taskModel, opts);
       IRestClient restClient = new RestClient(taskModel.Uri);
+
       IRestRequest request = new RestRequest(Method.GET);
       request.AddCookie("JSESSIONID", "4173BE2521D676127C3F9C3F8EA68F67");
+
+
       IRestResponse response = await restClient.ExecuteGetAsync(request);
       var contentText = response.Content;
       HtmlDocument document = new HtmlDocument();
       document.LoadHtml(contentText);
       var rootNode = document.DocumentNode;
       var result = await Parse(rootNode, taskModel.PropertyParsers.First().Value);
+    }
+
+    private async Task<IRestResponse> DownloadData(TaskModel taskModel) {
+      Method requestMethod = Method.GET;
+      switch (taskModel.RequestMethod) {
+        case RequestMethodEnum.Post:
+          requestMethod = Method.POST;
+          break;
+        case RequestMethodEnum.Put:
+          requestMethod = Method.PUT;
+          break;
+        case RequestMethodEnum.Patch:
+          requestMethod = Method.PATCH;
+          break;
+        case RequestMethodEnum.Delete:
+          requestMethod = Method.DELETE;
+          break;
+        case RequestMethodEnum.Copy:
+          requestMethod = Method.COPY;
+          break;
+        case RequestMethodEnum.Merge:
+          requestMethod = Method.MERGE;
+          break;
+        case RequestMethodEnum.Options:
+          requestMethod = Method.OPTIONS;
+          break;
+        default:
+        case RequestMethodEnum.None:
+        case RequestMethodEnum.Get:
+          requestMethod = Method.GET;
+          break;
+      }
+      IRestClient restClient = new RestClient(taskModel.Uri);
+      IRestRequest request = new RestRequest(requestMethod);
+      //Fill Request Parameter And Header
+      if (taskModel.RequestParameter.Headers?.Any() ?? false) {
+        request.AddHeaders(taskModel.RequestParameter.Headers);
+      }
+      //if (taskModel.RequestParameter.Body) {
+      //  request.AddBody(taskModel.RequestParameter.Body);
+      //}
     }
 
     private async Task<object> Parse(HtmlNode node, PropertyParserModel parser) {
@@ -133,8 +183,7 @@ namespace Spidernet.Client.Tests {
               tTempResult.Add(tempDynamicResult);
             }
             tempResult = tTempResult;
-          }
-          else {
+          } else {
             //无Parser 即为字符串数组
             tempResult = nodes.Select(c => c.InnerText);
           }
