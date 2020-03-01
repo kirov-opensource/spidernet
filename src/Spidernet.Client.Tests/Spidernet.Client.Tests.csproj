@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Spidernet.Client\Spidernet.Client.csproj" />
+    <ProjectReference Include="..\Spidernet.Model\Spidernet.Model.csproj" />
   </ItemGroup>
 
 </Project>

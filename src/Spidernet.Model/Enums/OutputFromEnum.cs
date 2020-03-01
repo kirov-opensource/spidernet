@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Spidernet.Client.Enums {
-  public enum OutputFrom {
+namespace Spidernet.Model.Enums {
+  [Flags]
+  public enum OutputFromEnum {
     None = 0,
     Attribute = 1 << 0,
     InnerText = 1 << 1,

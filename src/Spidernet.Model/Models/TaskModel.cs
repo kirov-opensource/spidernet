@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Spidernet.Client.Models {
+namespace Spidernet.Model.Models {
   public class TaskModel {
     /// <summary>
     /// Id
@@ -16,7 +16,7 @@ namespace Spidernet.Client.Models {
     /// <summary>
     /// 解析
     /// </summary>
-    public IDictionary<string,PropertyModel> Properties { get; set; }
+    public IDictionary<string,PropertyParserModel> PropertyParsers { get; set; }
     /// <summary>
     /// 环境变量
     /// </summary>

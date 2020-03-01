@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace Spidernet.Client.Enums {
-
+namespace Spidernet.Model.Enums {
   [Flags]
-  public enum Selector {
+  public enum SelectorEnum {
     None = 0,
     XPath = 1 << 0,
     CSS = 1 << 1
