@@ -11,11 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Model", "Spiderne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Extension", "Spidernet.Extension\Spidernet.Extension.csproj", "{383CE6D7-419B-4EA6-9A76-444967A794FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.TaskScheduler.Tests", "Spidernet.TaskScheduler.Tests\Spidernet.TaskScheduler.Tests.csproj", "{91B7C148-E2F3-4206-A146-CAF5BE6A2D6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.TaskScheduler.Tests", "..\tests\Spidernet.TaskScheduler.Tests\Spidernet.TaskScheduler.Tests.csproj", "{91B7C148-E2F3-4206-A146-CAF5BE6A2D6A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Client", "Spidernet.Client\Spidernet.Client.csproj", "{6F7E8DE6-B544-4C9F-A9BD-2C0697993606}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Client.Tests", "Spidernet.Client.Tests\Spidernet.Client.Tests.csproj", "{EA0644ED-B0CC-48CA-B924-FF138D3F06E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Client.Tests", "..\tests\Spidernet.Client.Tests\Spidernet.Client.Tests.csproj", "{EA0644ED-B0CC-48CA-B924-FF138D3F06E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{95C993E2-FFBB-443A-BBAD-CD41907C43D7}"
 	ProjectSection(SolutionItems) = preProject

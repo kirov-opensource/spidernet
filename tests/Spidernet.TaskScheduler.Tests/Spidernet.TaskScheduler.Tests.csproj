@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Spidernet.TaskScheduler\Spidernet.TaskScheduler.csproj" />
+    <ProjectReference Include="..\..\src\Spidernet.TaskScheduler\Spidernet.TaskScheduler.csproj" />
   </ItemGroup>
 
 </Project>
