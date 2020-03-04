@@ -17,7 +17,14 @@ using Xunit;
 
 namespace Spidernet.Client.Tests {
   public class SpidernetTests {
+    [Fact]
+    public async void KafkaSubscribeTest() {
 
+    }
+    [Fact]
+    public async void KafkaProduceTest() {
+
+    }
     [Fact]
     public async void ParserTest() {
       /*
