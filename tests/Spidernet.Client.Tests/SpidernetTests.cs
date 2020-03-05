@@ -3,6 +3,8 @@ using HtmlAgilityPack.CssSelectors.NetCore;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using RestSharp;
 using Spidernet.Model.Enums;
 using Spidernet.Model.Models;
@@ -10,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -19,11 +22,49 @@ namespace Spidernet.Client.Tests {
   public class SpidernetTests {
     [Fact]
     public async void KafkaSubscribeTest() {
+      ConnectionFactory factory = new ConnectionFactory();
+      // "guest"/"guest" by default, limited to localhost connections
+      factory.UserName = "user";
+      factory.Password = "test@test!";
+      factory.VirtualHost = "/";
+      factory.HostName = "mq.kirov-opensource.com";
 
+      IConnection conn = factory.CreateConnection();
+      IModel channel = conn.CreateModel();
+
+      channel.QueueDeclare("hello", false, false, false, null);//创建一个名称为hello的消息队列
+      string message = "Hello World"; //传递的消息内容
+      var body = Encoding.UTF8.GetBytes(message);
+      channel.BasicPublish("", "hello", null, body); //开始传递
+      Console.WriteLine("已发送： {0}", message);
+      Console.ReadLine();
+
+      channel.Close();
+      conn.Close();
     }
     [Fact]
     public async void KafkaProduceTest() {
+      var factory = new ConnectionFactory();
+      factory.UserName = "user";
+      factory.Password = "test@test!";
+      factory.VirtualHost = "/";
+      factory.HostName = "mq.kirov-opensource.com";
 
+      using (var connection = factory.CreateConnection()) {
+        using (var channel = connection.CreateModel()) {
+          channel.QueueDeclare("hello", false, false, false, null);
+
+          var consumer = new EventingBasicConsumer(channel);
+          channel.BasicConsume("hello", false, consumer);
+          consumer.Received += (model, ea) =>
+          {
+            var body = ea.Body;
+            var message = Encoding.UTF8.GetString(body);
+            Console.WriteLine("已接收： {0}", message);
+          };
+          Console.ReadLine();
+        }
+      }
     }
     [Fact]
     public async void ParserTest() {
