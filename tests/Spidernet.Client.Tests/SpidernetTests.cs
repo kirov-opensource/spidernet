@@ -3,6 +3,8 @@ using HtmlAgilityPack.CssSelectors.NetCore;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using Newtonsoft.Json.Schema;
+using Newtonsoft.Json.Schema.Generation;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RestSharp;
@@ -20,6 +22,12 @@ using Xunit;
 
 namespace Spidernet.Client.Tests {
   public class SpidernetTests {
+    [Fact]
+    public async void JSONSchemaValidation() {
+      var a = new JSchemaGenerator();
+      var cc =a.Generate(typeof(TaskModel));
+
+    }
     [Fact]
     public async void KafkaSubscribeTest() {
       ConnectionFactory factory = new ConnectionFactory();
@@ -142,7 +150,7 @@ namespace Spidernet.Client.Tests {
       JsonSerializerOptions opts = new JsonSerializerOptions();
       opts.IgnoreNullValues = true;
       opts.WriteIndented = true;
-      opts.Converters.Add(stringEnumConverter);
+      //opts.Converters.Add(stringEnumConverter);
 
 
       var txt = JsonSerializer.Serialize(taskModel, opts);
