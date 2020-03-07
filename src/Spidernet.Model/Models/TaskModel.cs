@@ -1,5 +1,6 @@
 ﻿using Spidernet.Model.Enums;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Spidernet.Model.Models {
   public class TaskModel {
@@ -14,6 +15,7 @@ namespace Spidernet.Model.Models {
     /// <summary>
     /// 请求类型
     /// </summary>
+    [EnumDataType(typeof(RequestMethodEnum))]
     public RequestMethodEnum RequestMethod { get; set; }
     /// <summary>
     /// 字段解析
@@ -22,10 +24,12 @@ namespace Spidernet.Model.Models {
     /// <summary>
     /// 环境变量
     /// </summary>
+    [EnumDataType(typeof(RequestParameterModel))]
     public RequestParameterModel RequestParameter { get; set; }
     /// <summary>
     /// 结果类型
     /// </summary>
+    [EnumDataType(typeof(ResponseTypeEnum))]
     public ResponseTypeEnum ResponseType { get; set; }
   }
 }
