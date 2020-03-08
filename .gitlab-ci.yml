@@ -20,5 +20,7 @@ stages:
 
 debug:
   stage: test
+  tags:
+    - Linux
   script:
     - echo 'End Summary'
