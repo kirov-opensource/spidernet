@@ -96,7 +96,7 @@ namespace Spidernet.Client.Tests {
       //opts.Converters.Add(stringEnumConverter);
 
 
-      var taskString = JsonSerializer.Serialize(taskModel, opts);
+      var taskString = JsonSerializer.Serialize(taskModel);
       JObject taskModel1 = JObject.Parse(taskString);
       JSchema schema = JSchema.Parse(schemaObject.ToString());
       var valid = taskModel1.IsValid(schema);
