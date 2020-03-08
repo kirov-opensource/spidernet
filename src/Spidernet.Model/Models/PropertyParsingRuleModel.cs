@@ -1,11 +1,13 @@
 ﻿using Spidernet.Model.Enums;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Spidernet.Model.Models {
   public class PropertyParsingRuleModel {
     /// <summary>
     /// 类型
     /// </summary>
+    [EnumDataType(typeof(OutputTypeEnum))]
     public OutputTypeEnum Type { get; set; }
     /// <summary>
     /// 节点选择器
@@ -18,6 +20,7 @@ namespace Spidernet.Model.Models {
     /// <summary>
     /// 输出类型
     /// </summary>
+    [EnumDataType(typeof(OutputFromEnum))]
     public OutputFromEnum OutputFrom { get; set; }
     /// <summary>
     /// 输出特性

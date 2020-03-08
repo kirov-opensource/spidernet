@@ -3,6 +3,7 @@ using HtmlAgilityPack.CssSelectors.NetCore;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 using RabbitMQ.Client;
@@ -22,10 +23,83 @@ using Xunit;
 
 namespace Spidernet.Client.Tests {
   public class SpidernetTests {
+
     [Fact]
     public async void JSONSchemaValidation() {
       var a = new JSchemaGenerator();
-      var cc =a.Generate(typeof(TaskModel));
+      var schemaObject =a.Generate(typeof(TaskModel));
+
+
+
+
+      var linkParser = new PropertyParsingRuleModel {
+        NodeSelector = new SelectorModel {
+          Type = SelectorEnum.XPath,
+          MatchExpression = "(.//a[contains(@class,'ellipsis-text')])[1]"
+        },
+        Type = OutputTypeEnum.Text,
+        OutputFrom = OutputFromEnum.Attribute,
+        OutputFromAttributeName = "href",
+      };
+
+      var nameParser = new PropertyParsingRuleModel {
+        NodeSelector = new SelectorModel {
+          Type = SelectorEnum.XPath,
+          MatchExpression = "(.//div[contains(@class,'pi-img-wrapper')])[1]/a[1]"
+        },
+        Type = OutputTypeEnum.Text,
+        OutputFrom = OutputFromEnum.Attribute,
+        OutputFromAttributeName = "name",
+      };
+
+      var priceParser = new PropertyParsingRuleModel {
+        NodeSelector = new SelectorModel {
+          Type = SelectorEnum.XPath,
+          MatchExpression = "(.//div[contains(@class,'pi-price')])[1]"
+        },
+        Type = OutputTypeEnum.Text,
+        OutputFrom = OutputFromEnum.InnerText
+      };
+
+
+      var productParser = new PropertyParsingRuleModel {
+        Type = OutputTypeEnum.Array,
+        NodeSelector = new SelectorModel {
+          Type = SelectorEnum.CSS,
+          MatchExpression = "div.product-list div.product-item"
+        },
+        PropertyParsingRules = new Dictionary<string, PropertyParsingRuleModel> {
+          { "Link",linkParser },
+          { "Name",nameParser },
+          { "Price",priceParser }
+        }
+      };
+
+
+      var taskModel = new TaskModel {
+        Uri = "http://www.exdoll.com/productlist.ac",
+        RequestMethod = RequestMethodEnum.Get,
+        TaskId = 0,
+        RequestParameter = new RequestParameterModel {
+          Headers = new Dictionary<string, string> { { "cookie", "JSESSIONID=912BD825760319675E9DE1E1C1E2D701" } },
+          Body = null
+        },
+        PropertyParsingRules = new Dictionary<string, PropertyParsingRuleModel> {
+          { "Products",productParser }
+        },
+      };
+
+      var stringEnumConverter = new JsonStringEnumConverter();
+      JsonSerializerOptions opts = new JsonSerializerOptions();
+      opts.IgnoreNullValues = true;
+      opts.WriteIndented = true;
+      //opts.Converters.Add(stringEnumConverter);
+
+
+      var taskString = JsonSerializer.Serialize(taskModel, opts);
+      JObject taskModel1 = JObject.Parse(taskString);
+      JSchema schema = JSchema.Parse(schemaObject.ToString());
+      var valid = taskModel1.IsValid(schema);
 
     }
     [Fact]
