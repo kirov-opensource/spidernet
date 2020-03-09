@@ -5,7 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Spidernet.BLL\Spidernet.BLL.csproj" />
+    <ProjectReference Include="..\Spidernet.DAL\Spidernet.DAL.csproj" />
+    <ProjectReference Include="..\Spidernet.Extension\Spidernet.Extension.csproj" />
+    <ProjectReference Include="..\Spidernet.Model\Spidernet.Model.csproj" />
   </ItemGroup>
 
 
