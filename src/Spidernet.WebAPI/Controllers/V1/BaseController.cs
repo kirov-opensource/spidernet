@@ -4,7 +4,7 @@ using Spidernet.BLL;
 
 namespace Spidernet.WebAPI.Controllers.V1 {
 
-  [ServiceFilter(typeof(AuthorizationFilters))]
+  //[ServiceFilter(typeof(AuthorizationFilters))]
   public class BaseController : ControllerBase {
     protected readonly ILogger logger;
     protected readonly Session session;
