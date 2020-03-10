@@ -5,7 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="BCrypt.Net-Next" Version="3.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Spidernet.BLL\Spidernet.BLL.csproj" />
+    <ProjectReference Include="..\Spidernet.DAL\Spidernet.DAL.csproj" />
+    <ProjectReference Include="..\Spidernet.Extension\Spidernet.Extension.csproj" />
+    <ProjectReference Include="..\Spidernet.Model\Spidernet.Model.csproj" />
   </ItemGroup>
 
 
