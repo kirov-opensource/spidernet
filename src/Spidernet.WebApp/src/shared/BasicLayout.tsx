@@ -6,6 +6,17 @@ import Home from '../components/Home';
 import JobList from '../components/Job/Index';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
+const routes = [
+    {
+        path: "/",
+        exact: true,
+        component: Home
+    },
+    {
+        path: "/jobs",
+        component: JobList
+    }
+];
 
 class BasicLayout extends Component {
 
@@ -52,7 +63,7 @@ class BasicLayout extends Component {
                                 }
                             >
                                 <Menu.Item key="Home"><Link to="/">Home</Link></Menu.Item>
-                                <Menu.Item key="Jobs"><Link to="/job">Jobs</Link></Menu.Item>
+                                <Menu.Item key="Jobs"><Link to="/jobs">Jobs</Link></Menu.Item>
                                 <Menu.Item key="Templates">Templates</Menu.Item>
                             </SubMenu>
                         </Menu>
@@ -72,8 +83,9 @@ class BasicLayout extends Component {
                             }}
                         >
                             <Switch>
-                                <Route exact path="/" component={Home} />
-                                <Route path="/job" component={JobList} />
+                                {routes.map((route, index) => (
+                                    <Route key={index} path={route.path} component={route.component} exact={route.exact} />
+                                ))}
                             </Switch>
                         </Content>
                     </Layout>
