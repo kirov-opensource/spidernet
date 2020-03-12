@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { Switch, Link, Route } from 'react-router-dom';
 import Home from '../components/Home';
+import JobList from '../components/Job/Index';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 class BasicLayout extends Component {
 
     state = {
-      collapsed: false,
+        collapsed: false,
     };
 
     toggleCollapsed = () => {
-      this.setState({
-        collapsed: !this.state.collapsed,
-      });
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
     };
 
     render() {
         return (
-            <Layout style={{height:"100vh"}}>
+            <Layout style={{ height: "100vh" }}>
                 <Header className="header">
                     <div className="logo" />
                     <Menu
@@ -49,8 +51,8 @@ class BasicLayout extends Component {
                                     </span>
                                 }
                             >
-                                <Menu.Item key="Home">Home</Menu.Item>
-                                <Menu.Item key="Jobs">Jobs</Menu.Item>
+                                <Menu.Item key="Home"><Link to="/">Home</Link></Menu.Item>
+                                <Menu.Item key="Jobs"><Link to="/job">Jobs</Link></Menu.Item>
                                 <Menu.Item key="Templates">Templates</Menu.Item>
                             </SubMenu>
                         </Menu>
@@ -69,7 +71,10 @@ class BasicLayout extends Component {
                                 minHeight: 280,
                             }}
                         >
-                            <Home />
+                            <Switch>
+                                <Route exact path="/" component={Home} />
+                                <Route path="/job" component={JobList} />
+                            </Switch>
                         </Content>
                     </Layout>
                 </Layout>
