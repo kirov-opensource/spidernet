@@ -25,6 +25,9 @@
     /// </summary>
     public string subsequent_task_property_scheme { get; set; }
 
+    /// <summary>
+    /// 目标地址
+    /// </summary>
     public string uri { get; set; }
 
     /// <summary>
