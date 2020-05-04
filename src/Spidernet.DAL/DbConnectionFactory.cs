@@ -1,30 +1,39 @@
 ﻿using Microsoft.Extensions.Options;
-using MySql.Data.MySqlClient;
+using Npgsql;
 using System.Data;
 
-namespace Spidernet.DAL
-{
-    public class DbConnectionFactory
-    {
-        private IOptions<DbConnectionConfig> config { get; set; }
-
-        private IDbConnection connection;
-
-        /// <summary>
-        /// 主
-        /// </summary>
-        public IDbConnection Connection
-        {
-
-            get
-            {
-                if (connection == null)
-                {
-                    connection = new MySqlConnection(config.Value.ConnectionString);
-                }
-                return connection;
-            }
-        }
-
+namespace Spidernet.DAL {
+  /// <summary>
+  /// 
+  /// </summary>
+  public class DbConnectionFactory {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="config"></param>
+    public DbConnectionFactory(IOptions<DbConnectionConfig> config) {
+      this.config = config;
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    private IOptions<DbConnectionConfig> config { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    private IDbConnection connection;
+
+    /// <summary>
+    /// 数据库链接
+    /// </summary>
+    public IDbConnection Connection {
+      get {
+        if (connection == null) {
+          connection = new NpgsqlConnection(config.Value.ConnectionString);
+        }
+        return connection;
+      }
+    }
+
+  }
 }
