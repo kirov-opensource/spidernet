@@ -29,16 +29,20 @@ namespace Spidernet.WebAPI.Tests {
     public async Task 获取用户信息_传入TOKEN_返回TOKEN相关用户信息(string token, long exceptUserId) {
       // 生成请求客户端
       var testClient = testServer.CreateClient();
+
       // 设置Token
       testClient.DefaultRequestHeaders.Add(TOKEN_KEY, token);
+
       // 获取响应
       var userInfoResponse = await testClient.GetAsync(USERINFO_RESOURCE_PATH);
+
       // 返回是正确
       Assert.Equal(HttpStatusCode.OK, userInfoResponse.StatusCode);
+
       // 内容不为空
       var responseText = await userInfoResponse.Content.ReadAsStringAsync();
-
       Assert.False(string.IsNullOrWhiteSpace(responseText));
+
       // 转换成实体
       var userInfoEntity = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(responseText);
 
@@ -51,14 +55,17 @@ namespace Spidernet.WebAPI.Tests {
     public async Task 获取用户信息_不传入TOKEN_返回默认相关用户信息(long exceptUserId) {
       // 生成请求客户端
       var testClient = testServer.CreateClient();
+
       // 获取响应
       var userInfoResponse = await testClient.GetAsync(USERINFO_RESOURCE_PATH);
+
       // 返回是正确
       Assert.Equal(HttpStatusCode.OK, userInfoResponse.StatusCode);
+
       // 内容不为空
       var responseText = await userInfoResponse.Content.ReadAsStringAsync();
-
       Assert.False(string.IsNullOrWhiteSpace(responseText));
+
       // 转换成实体
       var userInfoEntity = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(responseText);
 
