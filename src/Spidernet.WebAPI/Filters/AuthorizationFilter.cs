@@ -28,7 +28,7 @@ namespace Spidernet.WebAPI.Filters {
         return;
       }
 
-      string userToken = context.HttpContext.Request.Cookies["user_token"];
+      string userToken = context.HttpContext.Request.Headers["user_token"];
 
       if (!string.IsNullOrEmpty(userToken)) {
         session.User = await userService.GetByToken(userToken);
