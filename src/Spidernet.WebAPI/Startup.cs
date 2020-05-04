@@ -69,8 +69,11 @@ namespace Spidernet.WebAPI {
       services.AddScoped<Filters.AuthorizationFilter>();
       services.AddScoped<BLL.Session>();
       services.AddScoped<BLL.Services.UserService>();
+      services.AddScoped<BLL.Services.TemplateService>();
 
       services.AddTransient<DAL.Repositories.UserRepository>();
+      services.AddTransient<DAL.Repositories.TemplateRepository>();
+      services.AddTransient<DAL.Repositories.TaskRepository>();
     }
     /// <summary>
     /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

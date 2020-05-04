@@ -7,11 +7,17 @@ using System;
 using System.Threading.Tasks;
 
 namespace Spidernet.WebAPI.Controllers.V1 {
-  [Route("api/[controller]")]
-  [ApiController]
+  /// <summary>
+  /// session
+  /// </summary>
   public class SessionController : BaseController {
     private UserService userService;
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="session"></param>
+    /// <param name="userService"></param>
     public SessionController(ILoggerFactory logger, Session session, UserService userService) : base(logger, session) {
       this.userService = userService;
     }

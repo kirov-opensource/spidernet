@@ -25,7 +25,7 @@ namespace Spidernet.DAL.Repositories {
     /// <param name="token"></param>
     /// <returns></returns>
     public async Task<User> GetByToken(string token) {
-      var queriedData = await Connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM {TableName} WHERE token = @token", new { token });
+      var queriedData = await Connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM {TableName} WHERE token = @token AND delete_at IS NULL", new { token });
       return queriedData;
     }
   }

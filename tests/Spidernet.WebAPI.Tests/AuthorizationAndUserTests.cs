@@ -11,22 +11,13 @@ using System.Threading.Tasks;
 using Xunit;
 
 namespace Spidernet.WebAPI.Tests {
-  public class AuthorizationAndUserTests {
+  public class AuthorizationAndUserTests : TestWithServer {
     private const string TOKEN_KEY = "user_token";
     private const string USERINFO_RESOURCE_PATH = "/api/session/user_info";
-    private TestServer testServer;
-    public AuthorizationAndUserTests() {
-
-      var webHostBuilder = WebHost.CreateDefaultBuilder(new string[] { }).UseStartup<Startup>();
-
-      TestServer testServer = new TestServer(webHostBuilder);
-      this.testServer = testServer;
-
-    }
 
     [Theory]
     [InlineData("aaa", 1000000000000L)]
-    public async Task 获取用户信息_传入TOKEN_返回TOKEN相关用户信息(string token, long exceptUserId) {
+    public async Task 获取用户信息_传入TOKEN_返回TOKEN相关用户信息(string token, long expectUserId) {
       // 生成请求客户端
       var testClient = testServer.CreateClient();
 
@@ -47,12 +38,12 @@ namespace Spidernet.WebAPI.Tests {
       var userInfoEntity = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(responseText);
 
       // 判断实体ID和期望的ID一致
-      Assert.Equal(userInfoEntity.Id, exceptUserId);
+      Assert.Equal(userInfoEntity.Id, expectUserId);
     }
 
     [Theory]
     [InlineData(1000000000000L)]
-    public async Task 获取用户信息_不传入TOKEN_返回默认相关用户信息(long exceptUserId) {
+    public async Task 获取用户信息_不传入TOKEN_返回默认相关用户信息(long expectUserId) {
       // 生成请求客户端
       var testClient = testServer.CreateClient();
 
@@ -70,7 +61,7 @@ namespace Spidernet.WebAPI.Tests {
       var userInfoEntity = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(responseText);
 
       // 判断实体ID和期望的ID一致
-      Assert.Equal(userInfoEntity.Id, exceptUserId);
+      Assert.Equal(userInfoEntity.Id, expectUserId);
     }
   }
 }
