@@ -24,6 +24,17 @@ namespace Spidernet.WebAPI.Controllers.V1 {
     /// 
     /// </summary>
     /// <param name="no"></param>
+    /// <param name="updateTemplateModel"></param>
+    /// <returns></returns>
+    [HttpPut("{no}")]
+    public async Task<IActionResult> Update(string no, UpdateTemplateModel updateTemplateModel) {
+      await templateService.Update(no, updateTemplateModel);
+      return NoContent();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="no"></param>
     /// <returns></returns>
     [HttpGet("{no}")]
     public async Task<IActionResult> Get(string no) {

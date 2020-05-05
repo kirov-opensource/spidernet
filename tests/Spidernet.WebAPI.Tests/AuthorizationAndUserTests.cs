@@ -30,15 +30,11 @@ namespace Spidernet.WebAPI.Tests {
       // 返回是正确
       Assert.Equal(HttpStatusCode.OK, userInfoResponse.StatusCode);
 
-      // 内容不为空
-      var responseText = await userInfoResponse.Content.ReadAsStringAsync();
-      Assert.False(string.IsNullOrWhiteSpace(responseText));
-
-      // 转换成实体
-      var userInfoEntity = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(responseText);
+      // 将返回数据模型化
+      var userInfoModel = await userInfoResponse.Content.Cast<UserModel>();
 
       // 判断实体ID和期望的ID一致
-      Assert.Equal(userInfoEntity.Id, expectUserId);
+      Assert.Equal(userInfoModel?.Id, expectUserId);
     }
 
     [Theory]
@@ -50,18 +46,14 @@ namespace Spidernet.WebAPI.Tests {
       // 获取响应
       var userInfoResponse = await testClient.GetAsync(USERINFO_RESOURCE_PATH);
 
-      // 返回是正确
+      // 返回状态码是正确
       Assert.Equal(HttpStatusCode.OK, userInfoResponse.StatusCode);
 
-      // 内容不为空
-      var responseText = await userInfoResponse.Content.ReadAsStringAsync();
-      Assert.False(string.IsNullOrWhiteSpace(responseText));
-
-      // 转换成实体
-      var userInfoEntity = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(responseText);
+      // 将返回文本反序列化为模型
+      var userInfoModel = await userInfoResponse.Content.Cast<UserModel>();
 
       // 判断实体ID和期望的ID一致
-      Assert.Equal(userInfoEntity.Id, expectUserId);
+      Assert.Equal(userInfoModel?.Id, expectUserId);
     }
   }
 }

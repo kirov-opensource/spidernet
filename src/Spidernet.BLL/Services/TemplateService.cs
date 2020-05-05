@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Spidernet.BLL.Models.Templates;
 using Spidernet.DAL.Repositories;
+using Spidernet.Extension.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +23,8 @@ namespace Spidernet.BLL.Services {
     public TemplateService(ILoggerFactory loggerFactory, Session session, TemplateRepository templateRepository) : base(loggerFactory, null, session) {
       this.templateRepository = templateRepository;
     }
+
+
     /// <summary>
     /// 根据编号查询
     /// </summary>
@@ -43,6 +46,19 @@ namespace Spidernet.BLL.Services {
         return null;
       }
     }
+
+    public async Task Update(string no, UpdateTemplateModel updateTemplateModel) {
+      var originTemplate = await templateRepository.GetByNo(no);
+      if (originTemplate == null)
+        throw new BusinessException("模板不存在");
+
+      originTemplate.name = updateTemplateModel.Name;
+      originTemplate.property_parsing_rule = updateTemplateModel.PropertyParsingRule;
+      originTemplate.uri = updateTemplateModel.Uri;
+
+      await templateRepository.UpdateAsync(originTemplate);
+    }
+
     /// <summary>
     /// 创建Template
     /// </summary>
