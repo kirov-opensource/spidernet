@@ -60,9 +60,9 @@ namespace Spidernet.TaskScheduler.Tests {
       };
 
       var template = new Template {
-        header = string.Empty,
-        subsequent_task_property_scheme = string.Empty,
-        property_parsing_rule = "{\"GoogleEngine\":{ \"Type\":\"Text\",\"NodeSelector\":{\"Type\":\"XPath\",\"MatchExpression\":\"expression\"},\"PropertyParsingRules\":{\"SearchString\":{\"Type\":\"Text\",\"NodeSelector\":{\"Type\":\"XPath\",\"MatchExpression\":\"{{Google:SearchString}}\"}},\"Id\":{ \"Type\":\"Text\",\"NodeSelector\":{\"Type\":\"XPath\",\"MatchExpression\":\"xxxx\"}}}}}",
+        header = new Newtonsoft.Json.Linq.JObject { },
+        subsequent_task_property_scheme = new Newtonsoft.Json.Linq.JObject { },
+        property_parsing_rule = new Model.Models.PropertyParsingRuleModel { },//"{\"GoogleEngine\":{ \"Type\":\"Text\",\"NodeSelector\":{\"Type\":\"XPath\",\"MatchExpression\":\"expression\"},\"PropertyParsingRules\":{\"SearchString\":{\"Type\":\"Text\",\"NodeSelector\":{\"Type\":\"XPath\",\"MatchExpression\":\"{{Google:SearchString}}\"}},\"Id\":{ \"Type\":\"Text\",\"NodeSelector\":{\"Type\":\"XPath\",\"MatchExpression\":\"xxxx\"}}}}}",
         uri = "https://www.google.com/search?q={{Google:SearchString}}"
       };
 

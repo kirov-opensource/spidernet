@@ -27,7 +27,7 @@ namespace Spidernet.Client.Tests {
     [Fact]
     public async void JSONSchemaValidation() {
       var a = new JSchemaGenerator();
-      var schemaObject =a.Generate(typeof(TaskModel));
+      var schemaObject = a.Generate(typeof(TaskModel));
 
 
 
@@ -115,10 +115,13 @@ namespace Spidernet.Client.Tests {
       IModel channel = conn.CreateModel();
 
       channel.QueueDeclare("hello", false, false, false, null);//创建一个名称为hello的消息队列
-      string message = "Hello World"; //传递的消息内容
-      var body = Encoding.UTF8.GetBytes(message);
-      channel.BasicPublish("", "hello", null, body); //开始传递
-      Console.WriteLine("已发送： {0}", message);
+      for (int i = 0; i < 1000; i++) {
+        string message = $"Hello World{i}"; //传递的消息内容
+        var body = Encoding.UTF8.GetBytes(message);
+        channel.BasicPublish("", "hello", null, body); //开始传递  
+        Console.WriteLine("已发送： {0}", message);
+      }
+      
       Console.ReadLine();
 
       channel.Close();
@@ -138,11 +141,11 @@ namespace Spidernet.Client.Tests {
 
           var consumer = new EventingBasicConsumer(channel);
           channel.BasicConsume("hello", false, consumer);
-          consumer.Received += (model, ea) =>
-          {
+          consumer.Received += (model, ea) => {
             var body = ea.Body;
-            var message = Encoding.UTF8.GetString(body);
+            var message = Encoding.UTF8.GetString(body.ToArray());
             Console.WriteLine("已接收： {0}", message);
+            channel.BasicAck(ea.DeliveryTag, false);
           };
           Console.ReadLine();
         }
@@ -334,7 +337,8 @@ namespace Spidernet.Client.Tests {
               tTempResult.Add(tempDynamicResult);
             }
             tempResult = tTempResult;
-          } else {
+          }
+          else {
             //无Parser 即为字符串数组
             tempResult = nodes.Select(c => c.InnerText);
           }
