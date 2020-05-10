@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Spidernet.Model.Models {
+
+  /// <summary>
+  /// 
+  /// </summary>
   public class PropertyParsingRuleModel {
     /// <summary>
     /// 类型

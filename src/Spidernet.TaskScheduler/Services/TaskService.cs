@@ -37,7 +37,7 @@ namespace Spidernet.TaskScheduler.Services {
       Enum.TryParse(task.http_method.ToPascalCase(), out RequestMethodEnum requestMethod);
       var taskExecuteModel = new TaskModel {
         RequestMethod = requestMethod,
-        PropertyParsingRules = JsonConvert.DeserializeObject<IDictionary<string, PropertyParsingRuleModel>>(SymbolsEngine.SymbolsPreprocess(template.property_parsing_rule, configuration)),
+        PropertyParsingRules = JsonConvert.DeserializeObject<IDictionary<string, PropertyParsingRuleModel>>(SymbolsEngine.SymbolsPreprocess(JsonConvert.SerializeObject(template.property_parsing_rule), configuration)),
         TaskId = task.id,
         Uri = SymbolsEngine.SymbolsPreprocess(template.uri, configuration)
       };
