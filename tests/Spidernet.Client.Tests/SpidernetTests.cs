@@ -27,7 +27,7 @@ namespace Spidernet.Client.Tests {
     [Fact]
     public async void JSONSchemaValidation() {
       var a = new JSchemaGenerator();
-      var schemaObject =a.Generate(typeof(TaskModel));
+      var schemaObject = a.Generate(typeof(TaskModel));
 
 
 
@@ -115,10 +115,13 @@ namespace Spidernet.Client.Tests {
       IModel channel = conn.CreateModel();
 
       channel.QueueDeclare("hello", false, false, false, null);//创建一个名称为hello的消息队列
-      string message = "Hello World"; //传递的消息内容
-      var body = Encoding.UTF8.GetBytes(message);
-      channel.BasicPublish("", "hello", null, body); //开始传递
-      Console.WriteLine("已发送： {0}", message);
+      for (int i = 0; i < 1000; i++) {
+        string message = $"Hello World{i}"; //传递的消息内容
+        var body = Encoding.UTF8.GetBytes(message);
+        channel.BasicPublish("", "hello", null, body); //开始传递  
+        Console.WriteLine("已发送： {0}", message);
+      }
+      
       Console.ReadLine();
 
       channel.Close();
@@ -138,11 +141,11 @@ namespace Spidernet.Client.Tests {
 
           var consumer = new EventingBasicConsumer(channel);
           channel.BasicConsume("hello", false, consumer);
-          consumer.Received += (model, ea) =>
-          {
+          consumer.Received += (model, ea) => {
             var body = ea.Body;
-            var message = Encoding.UTF8.GetString(body);
+            var message = Encoding.UTF8.GetString(body.ToArray());
             Console.WriteLine("已接收： {0}", message);
+            channel.BasicAck(ea.DeliveryTag, false);
           };
           Console.ReadLine();
         }
@@ -212,13 +215,32 @@ namespace Spidernet.Client.Tests {
         RequestMethod = RequestMethodEnum.Get,
         TaskId = 0,
         RequestParameter = new RequestParameterModel {
-          Headers = new Dictionary<string, string> { { "cookie", "JSESSIONID=912BD825760319675E9DE1E1C1E2D701" } },
+          Headers = new Dictionary<string, string> { { "cookie", "JSESSIONID=B8285D0CFC10BFE7B4EB27EB542C7743" } },
           Body = null
         },
         PropertyParsingRules = new Dictionary<string, PropertyParsingRuleModel> {
           { "Products",productParser }
         },
       };
+
+
+      ConnectionFactory factory = new ConnectionFactory();
+      // "guest"/"guest" by default, limited to localhost connections
+      factory.UserName = "user";
+      factory.Password = "test@test!";
+      factory.VirtualHost = "/";
+      factory.HostName = "mq.kirov-opensource.com";
+
+      IConnection conn = factory.CreateConnection();
+      IModel channel = conn.CreateModel();
+
+      channel.QueueDeclare("Spidernet_TaskQueue", false, false, false, null);//创建一个名称为hello的消息队列
+      for (int i = 0; i < 1000; i++) {
+        string message = Newtonsoft.Json.JsonConvert.SerializeObject(taskModel); //传递的消息内容
+        var body = Encoding.UTF8.GetBytes(message);
+        channel.BasicPublish("", "Spidernet_TaskQueue", null, body); //开始传递  
+        Console.WriteLine("已发送： {0}", message);
+      }
 
       var stringEnumConverter = new JsonStringEnumConverter();
       JsonSerializerOptions opts = new JsonSerializerOptions();
@@ -334,7 +356,8 @@ namespace Spidernet.Client.Tests {
               tTempResult.Add(tempDynamicResult);
             }
             tempResult = tTempResult;
-          } else {
+          }
+          else {
             //无Parser 即为字符串数组
             tempResult = nodes.Select(c => c.InnerText);
           }

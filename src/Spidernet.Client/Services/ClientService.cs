@@ -1,6 +1,8 @@
 ﻿using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
+using Microsoft.Extensions.Options;
 using RestSharp;
+using Spidernet.BLL.Configs;
 using Spidernet.Model.Enums;
 using Spidernet.Model.Models;
 using System;
@@ -11,8 +13,13 @@ using System.Threading.Tasks;
 
 namespace Spidernet.Client.Services {
   public class ClientService {
+    public SpidernetClientConfig spidernetClientConfig;
+    public ClientService(IOptionsMonitor<SpidernetClientConfig> spidernetClientConfig) {
+      this.spidernetClientConfig = spidernetClientConfig.CurrentValue;
+      spidernetClientConfig.OnChange<SpidernetClientConfig>(config => this.spidernetClientConfig = config);
+    }
 
-    public async Task ExecuteTask(TaskModel taskModel) {
+    public async Task<dynamic> ExecuteTask(TaskModel taskModel) {
       //获取数据和解析
       var response = await GetResponseAsync(taskModel);
       var contentText = response.Content;
@@ -22,12 +29,12 @@ namespace Spidernet.Client.Services {
       var resultObject = new ExpandoObject();
       var resultObjectDic = (IDictionary<string, object>)resultObject;
       foreach (var propertyParser in taskModel.PropertyParsingRules) {
-        var propertyResponse = HtmlParse(rootNode, propertyParser.Value);
+        var propertyResponse = await HtmlParse(rootNode, propertyParser.Value);
         resultObjectDic[propertyParser.Key] = propertyResponse;
       }
+      return resultObjectDic;
       //进行后续操作 好比丢入MQ
     }
-
     #region 扩展方法
     /// <summary>
     /// 解析HTML

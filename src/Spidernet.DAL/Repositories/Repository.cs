@@ -165,6 +165,14 @@ namespace Spidernet.DAL.Repositories {
     /// <param name="type"></param>  
     /// <returns></returns>  
     private static string GetTableName(Type type) {
+      //after
+      if (Attribute.IsDefined(type, typeof(TableAttribute))){
+        var attribute = type.GetCustomAttribute<TableAttribute>();
+        return attribute.Name;
+      } else {
+        return $"\"{type.Name.ToSnakeCase()}\"";
+      }
+      //before 
       string tableName = null;
       object[] attributes = type.GetCustomAttributes(false);
       foreach (var attr in attributes) {
@@ -177,15 +185,23 @@ namespace Spidernet.DAL.Repositories {
     }
 
     private static string GetPrimaryKeyName(Type type) {
-      foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)) {
-        var attributes = field.FieldType.GetCustomAttributes(true);
-        foreach (var attribute in attributes) {
-          if (attribute is ExplicitKeyAttribute) {
-            return field.Name;
-          }
+      //after
+      foreach (var propertyInfo in type.GetProperties()) {
+        if (Attribute.IsDefined(propertyInfo, typeof(ExplicitKeyAttribute))) {
+          return propertyInfo.Name;
         }
-
       }
+
+      //before
+      //foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)) {
+      //  var attributes = field.FieldType.GetCustomAttributes(true);
+      //  foreach (var attribute in attributes) {
+      //    if (attribute is ExplicitKeyAttribute) {
+      //      return field.Name;
+      //    }
+      //  }
+      //}
+
       throw new ArgumentException("Entity has no primary key.");
     }
 

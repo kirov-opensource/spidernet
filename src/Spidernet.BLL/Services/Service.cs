@@ -22,7 +22,7 @@ namespace Spidernet.BLL.Services {
       IStringLocalizerFactory stringLocalizerFactory,
       Session session) {
       logger = loggerFactory.CreateLogger(GetType().FullName);
-      localizer = stringLocalizerFactory.Create(typeof(Service));
+      //localizer = stringLocalizerFactory.Create(typeof(Service));
       this.session = session;
     }
   }

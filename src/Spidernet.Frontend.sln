@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Extension", "Spid
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Model", "Spidernet.Model\Spidernet.Model.csproj", "{66AB93F7-3BC5-4CA9-9274-B299D04CACB3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CD37D1B6-94BF-4E8D-9C8C-1378580F8EB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spidernet.WebAPI.Tests", "..\tests\Spidernet.WebAPI.Tests\Spidernet.WebAPI.Tests.csproj", "{7839158E-D383-4B79-B209-FF4B7F0D30DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +43,16 @@ Global
 		{66AB93F7-3BC5-4CA9-9274-B299D04CACB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66AB93F7-3BC5-4CA9-9274-B299D04CACB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66AB93F7-3BC5-4CA9-9274-B299D04CACB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7839158E-D383-4B79-B209-FF4B7F0D30DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7839158E-D383-4B79-B209-FF4B7F0D30DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7839158E-D383-4B79-B209-FF4B7F0D30DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7839158E-D383-4B79-B209-FF4B7F0D30DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7839158E-D383-4B79-B209-FF4B7F0D30DD} = {CD37D1B6-94BF-4E8D-9C8C-1378580F8EB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39F16749-C7E2-4E4C-AC94-55064973165A}

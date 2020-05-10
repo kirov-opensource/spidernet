@@ -1,4 +1,10 @@
-﻿namespace Spidernet.DAL.Entities {
+﻿using Newtonsoft.Json.Linq;
+using Spidernet.Model.Models;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Spidernet.DAL.Entities {
+  [Table("\"template\"")]
   public class Template : Entity {
     /// <summary>
     /// 编号
@@ -8,7 +14,8 @@
     /// <summary>
     /// 头
     /// </summary>
-    public string header { get; set; }
+    [Column(TypeName = "json")]
+    public JObject header { get; set; }
 
     /// <summary>
     /// 模板名称
@@ -18,19 +25,23 @@
     /// <summary>
     /// 
     /// </summary>
-    public string property_parsing_rule { get; set; }
+    [Column(TypeName = "json")]
+    public PropertyParsingRuleModel property_parsing_rule { get; set; }
 
     /// <summary>
     /// 具有后续任务的属性
     /// </summary>
-    public string subsequent_task_property_scheme { get; set; }
+    [Column(TypeName = "json")]
+    public JObject subsequent_task_property_scheme { get; set; }
 
+    /// <summary>
+    /// 目标地址
+    /// </summary>
     public string uri { get; set; }
 
     /// <summary>
     /// 用户ID
     /// </summary>
     public long user_id { get; set; }
-
   }
 }

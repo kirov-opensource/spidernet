@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Client", "Spidern
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.Client.Tests", "..\tests\Spidernet.Client.Tests\Spidernet.Client.Tests.csproj", "{EA0644ED-B0CC-48CA-B924-FF138D3F06E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spidernet.BLL", "Spidernet.BLL\Spidernet.BLL.csproj", "{F69DB9FD-C436-46E1-A9C7-D62A9DBBD347}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spidernet.BLL", "Spidernet.BLL\Spidernet.BLL.csproj", "{F69DB9FD-C436-46E1-A9C7-D62A9DBBD347}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Spidernet.BLL;
+using Spidernet.WebAPI.Filters;
 
 namespace Spidernet.WebAPI.Controllers.V1 {
 
-  //[ServiceFilter(typeof(AuthorizationFilters))]
+  [ServiceFilter(typeof(AuthorizationFilter))]
+  [Route("api/[controller]")]
+  [ApiController]
   public class BaseController : ControllerBase {
     protected readonly ILogger logger;
     protected readonly Session session;
