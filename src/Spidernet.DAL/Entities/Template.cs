@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Spidernet.Model.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Spidernet.DAL.Entities {
@@ -26,7 +27,7 @@ namespace Spidernet.DAL.Entities {
     /// 
     /// </summary>
     [Column(TypeName = "json")]
-    public PropertyParsingRuleModel property_parsing_rule { get; set; }
+    public Dictionary<string, PropertyParsingRuleModel> property_parsing_rule { get; set; }
 
     /// <summary>
     /// 具有后续任务的属性

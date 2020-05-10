@@ -12,7 +12,7 @@ namespace Spidernet.BLL.Models.Templates {
     /// <summary>
     /// 转换规则
     /// </summary>
-    public PropertyParsingRuleModel PropertyParsingRule { get; set; }
+    public Dictionary<string, PropertyParsingRuleModel> PropertyParsingRule { get; set; }
     /// <summary>
     /// 资源地址
     /// </summary>

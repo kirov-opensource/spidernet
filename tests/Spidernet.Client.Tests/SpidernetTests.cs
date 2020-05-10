@@ -224,23 +224,23 @@ namespace Spidernet.Client.Tests {
       };
 
 
-      ConnectionFactory factory = new ConnectionFactory();
-      // "guest"/"guest" by default, limited to localhost connections
-      factory.UserName = "user";
-      factory.Password = "test@test!";
-      factory.VirtualHost = "/";
-      factory.HostName = "mq.kirov-opensource.com";
+      //ConnectionFactory factory = new ConnectionFactory();
+      //// "guest"/"guest" by default, limited to localhost connections
+      //factory.UserName = "user";
+      //factory.Password = "test@test!";
+      //factory.VirtualHost = "/";
+      //factory.HostName = "mq.kirov-opensource.com";
 
-      IConnection conn = factory.CreateConnection();
-      IModel channel = conn.CreateModel();
+      //IConnection conn = factory.CreateConnection();
+      //IModel channel = conn.CreateModel();
 
-      channel.QueueDeclare("Spidernet_TaskQueue", false, false, false, null);//创建一个名称为hello的消息队列
-      for (int i = 0; i < 1000; i++) {
-        string message = Newtonsoft.Json.JsonConvert.SerializeObject(taskModel); //传递的消息内容
-        var body = Encoding.UTF8.GetBytes(message);
-        channel.BasicPublish("", "Spidernet_TaskQueue", null, body); //开始传递  
-        Console.WriteLine("已发送： {0}", message);
-      }
+      //channel.QueueDeclare("Spidernet_TaskQueue", false, false, false, null);//创建一个名称为hello的消息队列
+      //for (int i = 0; i < 1000; i++) {
+      //  string message = Newtonsoft.Json.JsonConvert.SerializeObject(taskModel); //传递的消息内容
+      //  var body = Encoding.UTF8.GetBytes(message);
+      //  channel.BasicPublish("", "Spidernet_TaskQueue", null, body); //开始传递  
+      //  Console.WriteLine("已发送： {0}", message);
+      //}
 
       var stringEnumConverter = new JsonStringEnumConverter();
       JsonSerializerOptions opts = new JsonSerializerOptions();
