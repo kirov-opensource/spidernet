@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Spidernet.BLL.Configs;
 using Spidernet.Client.Jobs;
 using Spidernet.DAL;
 
@@ -33,6 +34,7 @@ namespace Spidernet.Client {
       });
 
       services.Configure<DbConnectionConfig>(Configuration.GetSection("DatabaseSettings"));
+      services.Configure<SpidernetClientConfig>(Configuration.GetSection("SpidernetClientConfig"));
 
       services.AddHostedService<ReadTaskJob>();
     }

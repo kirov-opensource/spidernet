@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Spidernet.BLL\Spidernet.BLL.csproj" />
     <ProjectReference Include="..\Spidernet.DAL\Spidernet.DAL.csproj" />
     <ProjectReference Include="..\Spidernet.Model\Spidernet.Model.csproj" />
   </ItemGroup>

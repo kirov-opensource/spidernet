@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Spidernet.BLL.Configs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,27 +14,30 @@ using System.Threading.Tasks;
 namespace Spidernet.Client.Jobs {
   public class ReadTaskJob : BackgroundService {
     private readonly ILogger<ReadTaskJob> _logger;
+    private readonly SpidernetClientConfig spidernetClientConfig;
 
-    public ReadTaskJob(ILogger<ReadTaskJob> logger) {
+    public ReadTaskJob(ILogger<ReadTaskJob> logger, IOptions<SpidernetClientConfig> spidernetClientConfig) {
       _logger = logger;
+      this.spidernetClientConfig = spidernetClientConfig.Value;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
       _logger.LogInformation("Worker started at: {time}", DateTimeOffset.Now);
 
       var factory = new ConnectionFactory();
-      factory.UserName = "user";
-      factory.Password = "test@test!";
-      factory.VirtualHost = "/";
-      factory.HostName = "mq.kirov-opensource.com";
+
+      factory.UserName = spidernetClientConfig.MQConfig.UserName;
+      factory.Password = spidernetClientConfig.MQConfig.Password;
+      factory.VirtualHost = spidernetClientConfig.MQConfig.VirtualHost;
+      factory.HostName = spidernetClientConfig.MQConfig.HostName;
 
       using (var connection = factory.CreateConnection()) {
         using (var channel = connection.CreateModel()) {
 
-          channel.QueueDeclare("hello", false, false, false, null);
+          channel.QueueDeclare(spidernetClientConfig.MQConfig.Queue, false, false, false, null);
 
           var consumer = new EventingBasicConsumer(channel);
-          channel.BasicConsume("hello", false, consumer);
+          channel.BasicConsume(spidernetClientConfig.MQConfig.Queue, false, consumer);
           consumer.Received += (model, ea) => {
             var body = ea.Body;
             var message = Encoding.UTF8.GetString(body.ToArray());
@@ -43,12 +48,6 @@ namespace Spidernet.Client.Jobs {
           Console.ReadLine();
         }
       }
-
-      //_logger.LogInformation("Worker started at: {time}", DateTimeOffset.Now);
-      //while (!stoppingToken.IsCancellationRequested) {
-      //  _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-      //  await Task.Delay(1000, stoppingToken);
-      //}
     }
   }
 }
