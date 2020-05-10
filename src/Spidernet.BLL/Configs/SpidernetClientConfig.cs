@@ -34,8 +34,13 @@ namespace Spidernet.BLL.Configs {
   /// </summary>
   public class SpidernetClientConfig {
     /// <summary>
-    /// 
+    /// 任务进入MQ(Task)
     /// </summary>
-    public MQConfig MQConfig { get; set; }
+    public MQConfig TaskInputMQConfig { get; set; }
+
+    /// <summary>
+    /// 结果输出MQ(Data)
+    /// </summary>
+    public MQConfig ResultOutputMQConfig { get; set; }
   }
 }

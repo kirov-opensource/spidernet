@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Spidernet.BLL.Configs;
 using Spidernet.Client.Jobs;
+using Spidernet.Client.Services;
 using Spidernet.DAL;
 
 namespace Spidernet.Client {
@@ -34,7 +35,10 @@ namespace Spidernet.Client {
       });
 
       services.Configure<DbConnectionConfig>(Configuration.GetSection("DatabaseSettings"));
+
       services.Configure<SpidernetClientConfig>(Configuration.GetSection("SpidernetClientConfig"));
+
+      services.AddSingleton<ClientService>();
 
       services.AddHostedService<ReadTaskJob>();
     }
