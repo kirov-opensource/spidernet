@@ -21,7 +21,7 @@ namespace Spidernet.WebAPI.Filters {
       //身份认证通过
       var endpoint = context.HttpContext.GetEndpoint();
       if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null) {
-        return true;
+        return;
       }
 
       string userToken = context.HttpContext.Request.Cookies["user_token"];
