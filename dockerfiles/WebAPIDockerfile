@@ -1,16 +1,27 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
-
 # Copy everything else and build
 COPY . ./
-RUN dotnet publish src\Spidernet.WebAPI\Spidernet.WebAPI.csproj -c Release -o out
+RUN dotnet publish src/Spidernet.WebAPI/Spidernet.WebAPI.csproj -c Release -o out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
+
+EXPOSE 5001
+
+ENV ASPNETCORE_URLS http://0.0.0.0:5001
+
+ENV ASPNETCORE_ENVIRONMENT $ASPNETCORE_ENVIRONMENT
+ENV ASPNETCORE_ACM_ALIYUN_NAMESPACE $ASPNETCORE_ACM_ALIYUN_NAMESPACE
+ENV ASPNETCORE_ACM_ALIYUN_ACCESS_KEY $ASPNETCORE_ACM_ALIYUN_ACCESS_KEY
+ENV ASPNETCORE_ACM_ALIYUN_SECRET_KEY $ASPNETCORE_ACM_ALIYUN_SECRET_KEY
+ENV ASPNETCORE_ACM_ALIYUN_DATA_ID $ASPNETCORE_ACM_ALIYUN_DATA_ID
+ENV ASPNETCORE_ACM_ALIYUN_GROUP $ASPNETCORE_ACM_ALIYUN_GROUP
+
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 ENTRYPOINT ["dotnet", "Spidernet.WebAPI.dll"]
