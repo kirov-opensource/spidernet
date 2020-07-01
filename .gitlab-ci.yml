@@ -28,5 +28,5 @@ develop_webapi_deploy:
   tags:
     - Linux
   script:
-    - docker rm -f spidernet-webapi-develop
+    - docker rm -f $(docker ps -a | grep spidernet-webapi:develop-latest | awk '{print $1'})
     - docker run -p 6543:5001 -d guoyongchang/spidernet-webapi:develop-latest --name spidernet-webapi-develop
