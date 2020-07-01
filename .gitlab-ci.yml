@@ -29,4 +29,4 @@ develop_webapi_deploy:
     - Linux
   script:
     - docker rm -f spidernet-webapi-develop
-    - docker run --name spidernet-webapi-develop -p 6543:80 guoyongchang/spidernet-webapi:develop-latest -d
+    - docker run --name spidernet-webapi-develop -p 6543:5001 guoyongchang/spidernet-webapi:develop-latest -d
