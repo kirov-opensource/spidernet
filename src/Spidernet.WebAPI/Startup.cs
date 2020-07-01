@@ -89,12 +89,12 @@ namespace Spidernet.WebAPI {
 
       app.UseMiddleware<ExceptionHandler>();
 
-      if (!env.IsProduction()) {
-        app.UseSwagger();
-        app.UseSwaggerUI(c => {
-          c.SwaggerEndpoint("/swagger/v1/swagger.json", "Spidernet.WebAPI v1");
-        });
-      }
+      //if (!env.IsProduction()) {
+      app.UseSwagger();
+      app.UseSwaggerUI(c => {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Spidernet.WebAPI v1");
+      });
+      //}
 
 
       app.UseRouting();
