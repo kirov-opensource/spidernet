@@ -12,7 +12,7 @@ develop_webapi_build:
   tags:
     - Linux
   script:
-    - docker build -t spidernet-webapi:latest -f dockerfiles/WebAPIDockerfile .
+    - docker build -t guoyongchang/spidernet-webapi:latest -f dockerfiles/WebAPIDockerfile .
     
 develop_webapi_push:
   stage: push
