@@ -1,3 +1,4 @@
+using Colipu.Extensions.ACM.Aliyun;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,10 @@ namespace Spidernet.WebAPI {
     /// </summary>
     /// <param name="services"></param>
     public void ConfigureServices(IServiceCollection services) {
+      services.AddAliyunACM(Configuration, (ex) => {
+        System.Console.WriteLine(ex.Message);
+      });
+
       // DB≤„≈‰÷√
       services.Configure<DAL.DbConnectionConfig>(Configuration.GetSection("DatabaseSettings"));
       services.AddTransient<DAL.DbConnectionFactory>();
