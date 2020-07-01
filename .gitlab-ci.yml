@@ -16,10 +16,10 @@
 
 
 stages:
-  - build_and_publish
+  - test
 
 debug:
-  stage: build_and_publish
+  stage: test
   tags:
     - Linux
   script:
