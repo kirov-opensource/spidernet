@@ -16,12 +16,11 @@
 
 
 stages:
-  - test
+  - build_and_publish
 
 debug:
-  stage: test
-  tags:
+  stage: build_and_publish
   tags:
     - Linux
   script:
-    - echo 'End Summary'
+    - docker build -t spider-net-webapi:latest -f dockerfiles/WebAPIDockerfile .
