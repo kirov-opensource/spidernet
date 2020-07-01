@@ -12,7 +12,7 @@ develop_webapi_build:
   tags:
     - Linux
   script:
-    - docker build -t guoyongchang/spidernet-webapi:latest -f dockerfiles/WebAPIDockerfile .
+    - docker build -t spidernet-webapi:latest -f dockerfiles/WebAPIDockerfile .
     
 develop_webapi_push:
   stage: push
@@ -20,13 +20,13 @@ develop_webapi_push:
     - Linux
   script:
     - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-    - docker tag spidernet-webapi:latest guoyongchang/spidernet-webapi:latest
-    - docker push guoyongchang/spidernet-webapi:latest
+    - docker tag spidernet-webapi:latest guoyongchang/spidernet-webapi:develop-latest
+    - docker push guoyongchang/spidernet-webapi:develop-latest
 
 develop_webapi_deploy:
   stage: deploy
   tags:
     - Linux
   script:
-    - docker rm -rf spidernet-webapi-develop
+    - docker rm -f spidernet-webapi-develop
     - docker run --name spidernet-webapi-develop -p 6543:80 guoyongchang/spidernet-webapi:develop-latest -d
